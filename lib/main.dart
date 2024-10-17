@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorSchemeSeed: Colors.blueAccent,
+          colorSchemeSeed: Colors.cyanAccent,
           textTheme: const TextTheme(
             headlineLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

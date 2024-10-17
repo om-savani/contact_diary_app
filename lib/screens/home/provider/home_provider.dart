@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class HomeProvider extends ChangeNotifier {
   List<ContactModel> Details = [];
-
+  int selectedIndex = 0;
   void addDetails(ContactModel model) {
     Details.add(model);
     notifyListeners();
@@ -11,6 +11,16 @@ class HomeProvider extends ChangeNotifier {
 
   void removeDetails(int index) {
     Details.removeAt(index);
+    notifyListeners();
+  }
+
+  void changeIndex(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+
+  void UpdateDetails(ContactModel model) {
+    Details[selectedIndex] = model;
     notifyListeners();
   }
 }
