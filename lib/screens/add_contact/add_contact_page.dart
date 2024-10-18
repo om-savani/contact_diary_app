@@ -142,11 +142,13 @@ class _addContactPageState extends State<addContactPage> {
                             String name = nameController.text;
                             String number = numberController.text;
                             String email = emailController.text;
+
                             ContactModel details = ContactModel(
                               name: name,
                               number: number,
                               email: email,
                               image: path,
+                              ishided: false,
                             );
                             context.read<HomeProvider>().addDetails(details);
                             Navigator.pop(context);

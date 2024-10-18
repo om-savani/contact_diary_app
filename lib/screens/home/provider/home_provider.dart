@@ -23,4 +23,13 @@ class HomeProvider extends ChangeNotifier {
     Details[selectedIndex] = model;
     notifyListeners();
   }
+
+  void HideDetails() {
+    if (Details[selectedIndex].ishided == true) {
+      Details[selectedIndex].ishided = false;
+    } else {
+      Details[selectedIndex].ishided = true;
+    }
+    notifyListeners();
+  }
 }

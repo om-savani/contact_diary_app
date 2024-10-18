@@ -34,54 +34,15 @@ class _DetailscreenState extends State<Detailscreen> {
         actions: [
           IconButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("Edit Contact"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                          labelText: "Name",
-                        ),
-                      ),
-                      TextField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          labelText: "Email",
-                        ),
-                      ),
-                      TextField(
-                        controller: numberController,
-                        decoration: const InputDecoration(labelText: "Number"),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        ContactModel cmodel = ContactModel(
-                          name: nameController.text,
-                          number: numberController.text,
-                          email: emailController.text,
-                          image: model.image,
-                        );
-                        context.read<HomeProvider>().UpdateDetails(cmodel);
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Save"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel"),
-                    ),
-                  ],
-                ),
-              );
+              print("Index : ${context.read<HomeProvider>().selectedIndex}");
+              context.read<HomeProvider>().HideDetails();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.lock),
+          ),
+          IconButton(
+            onPressed: () {
+              buildShowDialog(context, model);
             },
             icon: const Icon(Icons.edit),
           ),
@@ -134,6 +95,58 @@ class _DetailscreenState extends State<Detailscreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<dynamic> buildShowDialog(BuildContext context, ContactModel model) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Edit Contact"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Name",
+              ),
+            ),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+              ),
+            ),
+            TextField(
+              controller: numberController,
+              decoration: const InputDecoration(labelText: "Number"),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              ContactModel cmodel = ContactModel(
+                name: nameController.text,
+                number: numberController.text,
+                email: emailController.text,
+                image: model.image,
+                ishided: model.ishided,
+              );
+              context.read<HomeProvider>().UpdateDetails(cmodel);
+              Navigator.pop(context);
+            },
+            child: const Text("Save"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cancel"),
+          ),
+        ],
       ),
     );
   }
