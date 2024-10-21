@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:contact_diary_app/screens/home/provider/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,8 +23,22 @@ class _HomepageState extends State<Homepage> {
         title: const Text('Homepage'),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.hidecontact);
+              onPressed: () async {
+                LocalAuthentication auth = LocalAuthentication();
+
+                bool isAuthenticated = await auth.authenticate(
+                  localizedReason: "Open to access hidden contacts !!",
+                );
+
+                if (isAuthenticated) {
+                  Navigator.of(context).pushNamed(AppRoutes.hidecontact);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Authentication Failed"),
+                    ),
+                  );
+                }
               },
               icon: const Icon(Icons.lock))
         ],
@@ -41,8 +56,6 @@ class _HomepageState extends State<Homepage> {
                     context.read<HomeProvider>().removeDetails(index),
                 onTap: () {
                   context.read<HomeProvider>().changeIndex(index);
-                  print(
-                      "Index : ${context.read<HomeProvider>().selectedIndex}");
                   Navigator.pushNamed(context, AppRoutes.details,
                       arguments: context.read<HomeProvider>().Details[index]);
                 },
@@ -75,12 +88,13 @@ class _HomepageState extends State<Homepage> {
                     .number
                     .toString()),
                 trailing: IconButton(
-                    onPressed: () async {
-                      await launchUrl(
-                          "tel:${context.watch<HomeProvider>().Details[index].number}"
-                              as Uri);
-                    },
-                    icon: const Icon(Icons.phone)),
+                  onPressed: () async {
+                    Uri contactNo = Uri.parse(
+                        'tel : ${context.read<HomeProvider>().Details[index].number}');
+                    await launchUrl(contactNo);
+                  },
+                  icon: const Icon(Icons.phone),
+                ),
               ),
             );
           },
